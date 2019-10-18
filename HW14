@@ -1,0 +1,90 @@
+form.addEventListener('submit', function(event){
+	function modalSub(){
+	return new Promise(function( resolve,reject){
+			event.preventDefault();
+	form.appendChild(createElement);
+	let request = new XMLHttpRequest();
+	request.open('POST', 'server.php');
+	request.setRequestHeader('Content-type' , 'applicatoin/json; charset = utf-8');
+	
+	let formData = new FormData(form);
+	let obj = {};
+
+	formData.forEach(function(value, key){
+		obj[key]= value;
+
+	});
+	console.log(obj);
+	let json = JSON.stringify(obj);
+	request.send(json);
+	console.log(json);
+	request.onload =  function(){
+	(request.readyState == 4 && request.status ==200)? resolve(this.success): reject(this.error);
+    
+};
+	});
+}
+	
+	function clear(){
+
+		for(let i =0; i < popupFormInput.length; i++ ){
+			popupFormInput[i].value = ''; 
+		}
+		console.log("clear");
+	}
+function loadIng(){
+	createElement.textContent = contain.loading;
+	console.log("loading");
+}
+	modalSub()
+	.then(success =>{
+			createElement.textContent = contain.success;
+			console.log(contain.success);
+	})
+	.then(loadIng())
+	.then(clear())
+	.catch( error=>{
+		createElement.textContent = contain.failure;
+	})
+
+});
+	
+	
+
+ let formContact = document.getElementById("form");
+ let input = formContact.getElementsByTagName('input');
+  let ansElem = document.createElement("div");
+  ansElem.classList.add("status");
+
+  formContact.addEventListener('submit', function(event){
+  	event.preventDefault();
+  	console.log(input);
+  	formContact.appendChild(ansElem);
+  	let request1 = new XMLHttpRequest();
+  	request1.open( 'POST' , 'server.php');
+  	request1.setRequestHeader('Content-type' , 'applicatoin/json; charset = utf-8');
+
+  	let formData1 = new FormData(formContact);
+console.log(formData1);
+  	let obj1 = {};
+
+  	formData1.forEach(function(value, key){
+  		 obj1[key] = value; 
+
+  	});
+  	let jsonvb = JSON.stringify(obj1);
+  	console.log(obj1);
+  	request1.send(jsonvb);
+
+  	request1.addEventListener('readystatechange' , function(){
+  		if( request1.readyState < 4){
+  			ansElem.textContent = contain.loading;
+
+  		} else if( request1.readyState == 4 &&  request1.status ==200){
+  			ansElem.textContent = contain.success;
+  		} else {
+  			ansElem.textContent = contain.failure;
+  		}
+  	});
+  });
+
